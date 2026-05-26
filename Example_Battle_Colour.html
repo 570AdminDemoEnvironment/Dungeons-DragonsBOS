@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example Battle — Party vs. 3 Orcs</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: #eee; padding: 20px; line-height: 1.6; }
+        .page { max-width: 900px; margin: 0 auto; }
+
+        h1 { text-align: center; font-size: 1.8em; color: #e2e8f0; margin-bottom: 4px; }
+        .subtitle { text-align: center; color: #64748b; margin-bottom: 30px; font-size: 0.9em; }
+
+        .intro { background: #16213e; border: 2px solid #1e3a5f; border-radius: 10px; padding: 16px; margin-bottom: 24px; }
+        .intro p { font-size: 0.9em; color: #cbd5e1; margin-bottom: 8px; }
+        .intro strong { color: #e2e8f0; }
+
+        /* Initiative */
+        .init-block { background: #16213e; border: 2px solid #1e3a5f; border-radius: 10px; padding: 16px; margin-bottom: 24px; }
+        .init-block h2 { color: #38bdf8; font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .init-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+        .init-table th { text-align: left; color: #64748b; font-size: 0.75em; text-transform: uppercase; padding: 4px 8px; border-bottom: 1px solid #1e3a5f; }
+        .init-table td { padding: 6px 8px; border-bottom: 1px solid #0f3460; }
+        .init-table .roll { color: #94a3b8; }
+        .init-table .name-player { font-weight: bold; color: #e2e8f0; }
+        .init-table .name-enemy { font-weight: bold; color: #fca5a5; }
+        .init-table .total { font-weight: bold; color: #38bdf8; }
+
+        /* Round headers */
+        .round-header { background: linear-gradient(90deg, #7c3aed, #0f3460); border-radius: 8px; padding: 12px 20px; margin: 30px 0 16px; }
+        .round-header h2 { color: #fff; font-size: 1.2em; margin: 0; }
+
+        /* Turn blocks */
+        .turn { background: #16213e; border-left: 4px solid #1e3a5f; border-radius: 0 8px 8px 0; padding: 14px 18px; margin-bottom: 12px; }
+        .turn.rogue { border-left-color: #7c3aed; }
+        .turn.fighter { border-left-color: #f59e0b; }
+        .turn.cleric { border-left-color: #4ade80; }
+        .turn.enemy { border-left-color: #ef4444; }
+        .turn.death { border-left-color: #6b7280; background: #1a1a2e; }
+
+        .turn-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .turn-name { font-weight: bold; font-size: 1em; }
+        .turn.rogue .turn-name { color: #c084fc; }
+        .turn.fighter .turn-name { color: #fbbf24; }
+        .turn.cleric .turn-name { color: #86efac; }
+        .turn.enemy .turn-name { color: #fca5a5; }
+        .turn.death .turn-name { color: #9ca3af; }
+        .turn-init { font-size: 0.75em; color: #64748b; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 10px; }
+
+        .narration { font-style: italic; color: #94a3b8; margin-bottom: 8px; font-size: 0.9em; }
+        .mechanic { background: rgba(0,0,0,0.3); border-radius: 6px; padding: 8px 12px; margin: 6px 0; font-size: 0.85em; }
+        .mechanic .dice { color: #38bdf8; font-weight: bold; }
+        .mechanic .hit { color: #4ade80; font-weight: bold; }
+        .mechanic .miss { color: #f87171; font-weight: bold; }
+        .mechanic .damage { color: #fbbf24; font-weight: bold; }
+        .mechanic .heal { color: #4ade80; font-weight: bold; }
+
+        .dm-note { background: rgba(251,191,36,0.1); border: 1px solid #b45309; border-radius: 6px; padding: 8px 12px; margin: 8px 0; font-size: 0.8em; }
+        .dm-note::before { content: "💡 "; }
+        .dm-note strong { color: #fbbf24; }
+        .dm-note { color: #fde68a; }
+
+        .hp-result { font-size: 0.85em; padding: 4px 10px; border-radius: 4px; display: inline-block; margin-top: 4px; }
+        .hp-result.dead { background: rgba(239,68,68,0.2); color: #fca5a5; }
+        .hp-result.hurt { background: rgba(251,191,36,0.2); color: #fde68a; }
+        .hp-result.down { background: rgba(239,68,68,0.3); color: #fca5a5; font-weight: bold; }
+        .hp-result.healed { background: rgba(74,222,128,0.2); color: #86efac; }
+
+        /* Status table */
+        .status-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.85em; }
+        .status-table th { text-align: left; color: #64748b; font-size: 0.75em; text-transform: uppercase; padding: 6px 10px; border-bottom: 2px solid #1e3a5f; }
+        .status-table td { padding: 8px 10px; border-bottom: 1px solid #0f3460; }
+        .status-table .dead-row { opacity: 0.5; text-decoration: line-through; }
+
+        /* Summary */
+        .summary { background: #16213e; border: 2px solid #4ade80; border-radius: 10px; padding: 20px; margin-top: 30px; }
+        .summary h2 { color: #4ade80; font-size: 1.1em; margin-bottom: 12px; }
+        .summary ul { list-style: none; padding: 0; }
+        .summary li { font-size: 0.85em; padding: 3px 0; color: #cbd5e1; }
+        .summary li::before { content: "✓ "; color: #4ade80; font-weight: bold; }
+        .summary li strong { color: #e2e8f0; }
+
+        .takeaways { background: #16213e; border: 2px solid #38bdf8; border-radius: 10px; padding: 20px; margin-top: 16px; }
+        .takeaways h2 { color: #38bdf8; font-size: 1.1em; margin-bottom: 12px; }
+        .takeaways ul { list-style: none; padding: 0; }
+        .takeaways li { font-size: 0.85em; padding: 4px 0; color: #cbd5e1; }
+        .takeaways li::before { content: "→ "; color: #38bdf8; font-weight: bold; }
+        .takeaways li strong { color: #e2e8f0; }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <h1>⚔️ Example Battle: Party vs. 3 Orcs</h1>
+        <div class="subtitle">A full combat walkthrough using your characters — read this to understand how a fight works!</div>
+
+        <!-- INTRO -->
+        <div class="intro">
+            <p><strong>The Scene:</strong> The party is travelling along a forest road toward the Dwarven Excavation. Perseus spots movement in the treeline (his Passive Perception of 14 beats the orcs' Stealth). No surprise round, but the party is aware — everyone rolls initiative!</p>
+            <p><strong>The Enemies:</strong> 3 Orcs — AC 13, HP 15, Greataxe +5 to hit (1d12+3 damage). Special trait: <strong>Aggressive</strong> — they can use a bonus action to move their full speed toward an enemy (they close distance FAST).</p>
+        </div>
+
+        <!-- INITIATIVE -->
+        <div class="init-block">
+            <h2>Step 1: Roll Initiative (everyone rolls d20 + DEX modifier)</h2>
+            <table class="init-table">
+                <tr><th>Roll</th><th>Character</th><th>Total</th></tr>
+                <tr><td class="roll">d20+1 = 18+1</td><td class="name-enemy">Orc C</td><td class="total">19</td></tr>
+                <tr><td class="roll">d20+3 = 14+3</td><td class="name-player">Perseus Madonicai</td><td class="total">17</td></tr>
+                <tr><td class="roll">d20+2 = 12+2</td><td class="name-player">Halitus Acidspeak</td><td class="total">14</td></tr>
+                <tr><td class="roll">d20+1 = 11+1</td><td class="name-enemy">Orc A</td><td class="total">12</td></tr>
+                <tr><td class="roll">d20+1 = 7+1</td><td class="name-player">Squelch Puddingpants</td><td class="total">8</td></tr>
+                <tr><td class="roll">d20+1 = 5+1</td><td class="name-enemy">Orc B</td><td class="total">6</td></tr>
+            </table>
+            <div class="dm-note"><strong>How initiative works:</strong> Everyone acts in order from highest to lowest. Each "round" everyone gets one turn. On your turn you can: MOVE (up to your speed) + take one ACTION + sometimes a BONUS ACTION.</div>
+        </div>
+
+        <!-- ROUND 1 -->
+        <div class="round-header"><h2>Round 1</h2></div>
+
+        <div class="turn enemy">
+            <div class="turn-header">
+                <span class="turn-name">Orc C</span>
+                <span class="turn-init">Initiative 19</span>
+            </div>
+            <p class="narration">"WAAAGH!" The orc bursts from the trees. It uses its Aggressive trait (bonus action) to sprint its full 30ft toward Halitus, then swings its greataxe.</p>
+            <div class="mechanic">
+                <strong>Attack:</strong> <span class="dice">d20+5 = 14</span> vs Halitus's AC 18 → <span class="miss">MISS!</span>
+            </div>
+            <p class="narration">The axe clangs off the dragonborn's shield. He doesn't even flinch.</p>
+            <div class="dm-note"><strong>Why it missed:</strong> Halitus has AC 18 (chain mail + shield). The orc needed to roll 13 or higher on the d20. It only rolled a 9 (9+5=14). High AC means attacks bounce off!</div>
+        </div>
+
+        <div class="turn rogue">
+            <div class="turn-header">
+                <span class="turn-name">Perseus Madonicai</span>
+                <span class="turn-init">Initiative 17</span>
+            </div>
+            <p class="narration">Perseus sees the orc standing right next to Halitus. Perfect. He ducks behind a tree and nocks an arrow...</p>
+            <div class="mechanic">
+                <strong>Bonus Action — Cunning Action: Hide</strong><br>
+                Stealth check: <span class="dice">d20+7 = 24</span> vs Orc's Passive Perception 10 → He's hidden!
+            </div>
+            <div class="mechanic">
+                <strong>Action — Shortbow Attack (with Advantage because hidden!):</strong><br>
+                Roll twice, take the better: <span class="dice">d20+5 = 9</span>, <span class="dice">d20+5 = 18</span> → uses the <span class="hit">18 — HIT!</span>
+            </div>
+            <div class="mechanic">
+                <strong>Damage:</strong> Shortbow <span class="damage">1d6+3 = 7</span> + Sneak Attack <span class="damage">1d6 = 5</span> → <span class="damage">Total: 12 damage!</span>
+            </div>
+            <span class="hp-result hurt">Orc C: 15 → 3 HP remaining</span>
+            <div class="dm-note"><strong>Sneak Attack explained:</strong> Perseus gets bonus 1d6 damage because EITHER he has advantage on the attack OR an ally (Halitus) is within 5ft of the target. He had BOTH here! This only works once per turn — it's the rogue's main damage source.</div>
+        </div>
+
+        <div class="turn fighter">
+            <div class="turn-header">
+                <span class="turn-name">Halitus Acidspeak</span>
+                <span class="turn-init">Initiative 14</span>
+            </div>
+            <p class="narration">The orc is staggering from the arrow. Halitus raises his warhammer and brings it crashing down.</p>
+            <div class="mechanic">
+                <strong>Action — Warhammer Attack:</strong> <span class="dice">d20+5 = 17</span> vs AC 13 → <span class="hit">HIT!</span>
+            </div>
+            <div class="mechanic">
+                <strong>Damage:</strong> <span class="damage">1d8+5 = 11</span> (the +5 includes +3 STR and +2 from Dueling fighting style)
+            </div>
+            <span class="hp-result dead">☠️ Orc C is DEAD!</span>
+            <div class="dm-note"><strong>Dueling explained:</strong> Because Halitus wields a one-handed weapon with a shield, he gets +2 bonus damage on every hit. This makes his average damage very consistent — he doesn't need lucky rolls to hurt things.</div>
+        </div>
+
+        <div class="turn enemy">
+            <div class="turn-header">
+                <span class="turn-name">Orc A</span>
+                <span class="turn-init">Initiative 12</span>
+            </div>
+            <p class="narration">The second orc sees its companion fall and charges with fury. It uses Aggressive to sprint 60ft and reaches Squelch — the smallest target (it assumes he's the weakest. It's wrong about the armor, but right about the HP).</p>
+            <div class="mechanic">
+                <strong>Attack:</strong> <span class="dice">d20+5 = 21</span> vs Squelch's AC 18 → <span class="hit">HIT!</span> (rolled a 16 on the die)
+            </div>
+            <div class="mechanic">
+                <strong>Damage:</strong> <span class="damage">1d12+3 = 12</span>
+            </div>
+            <span class="hp-result down">💀 Squelch drops to 0 HP — UNCONSCIOUS!</span>
+            <div class="dm-note"><strong>Going to 0 HP:</strong> You don't die immediately! You fall unconscious and start making Death Saving Throws on your turns. Your allies can heal you to bring you back. This is dramatic but fixable!</div>
+        </div>
+
+        <div class="turn death">
+            <div class="turn-header">
+                <span class="turn-name">Squelch Puddingpants</span>
+                <span class="turn-init">Initiative 8 — UNCONSCIOUS</span>
+            </div>
+            <p class="narration">Squelch is face-down in the mud. He can't act. He'll start making Death Saving Throws next round.</p>
+        </div>
+
+        <div class="turn enemy">
+            <div class="turn-header">
+                <span class="turn-name">Orc B</span>
+                <span class="turn-init">Initiative 6</span>
+            </div>
+            <p class="narration">The third orc uses Aggressive to charge toward Perseus in the trees.</p>
+            <div class="mechanic">
+                <strong>Attack:</strong> <span class="dice">d20+5 = 11</span> vs Perseus's AC 14 → <span class="miss">MISS!</span> (barely!)
+            </div>
+            <p class="narration">The axe chops into a tree trunk as Perseus ducks.</p>
+        </div>
+
+        <!-- END OF ROUND 1 STATUS -->
+        <table class="status-table">
+            <tr><th>Character</th><th>HP</th><th>Status</th></tr>
+            <tr><td>Perseus</td><td>10/10</td><td>Hidden in trees, Orc B next to him</td></tr>
+            <tr><td>Halitus</td><td>12/12</td><td>Untouched, no orc adjacent</td></tr>
+            <tr><td>Squelch</td><td style="color:#f87171">0/12</td><td style="color:#f87171">☠️ UNCONSCIOUS</td></tr>
+            <tr class="dead-row"><td>Orc C</td><td>Dead</td><td>—</td></tr>
+            <tr><td>Orc A</td><td>15/15</td><td>Standing over Squelch</td></tr>
+            <tr><td>Orc B</td><td>15/15</td><td>Next to Perseus</td></tr>
+        </table>
+
+        <!-- ROUND 2 -->
+        <div class="round-header"><h2>Round 2</h2></div>
+
+        <div class="turn rogue">
+            <div class="turn-header">
+                <span class="turn-name">Perseus Madonicai</span>
+                <span class="turn-init">Initiative 17</span>
+            </div>
+            <p class="narration">Orc B is right in Perseus's face! Firing a bow this close would be at disadvantage, so he draws his shortsword and lunges.</p>
+            <div class="mechanic">
+                <strong>Action — Shortsword Attack:</strong> <span class="dice">d20+5 = 16</span> vs AC 13 → <span class="hit">HIT!</span><br>
+                <strong>Damage:</strong> <span class="damage">1d6+3 = 5</span> (NO Sneak Attack — no ally within 5ft of this orc)
+            </div>
+            <span class="hp-result hurt">Orc B: 15 → 10 HP</span>
+            <div class="dm-note"><strong>Without Sneak Attack:</strong> The rogue's damage drops significantly. This is why positioning matters — Perseus wants to fight the SAME enemy Halitus is fighting, not a separate one.</div>
+        </div>
+
+        <div class="turn fighter">
+            <div class="turn-header">
+                <span class="turn-name">Halitus Acidspeak</span>
+                <span class="turn-init">Initiative 14</span>
+            </div>
+            <p class="narration">Halitus sees Squelch go down and ROARS. He moves 30ft toward Orc A, opens his jaws, and unleashes his Breath Weapon!</p>
+            <div class="mechanic">
+                <strong>Action — Breath Weapon (Acid, 5×30ft line, 1/short rest):</strong><br>
+                Orc A makes a DEX saving throw: <span class="dice">d20+1 = 8</span> vs DC 13 → <span class="miss">FAILED!</span><br>
+                <strong>Damage:</strong> <span class="damage">2d6 acid = 9 damage</span> (full damage because the save failed)
+            </div>
+            <span class="hp-result hurt">Orc A: 15 → 6 HP</span>
+            <p class="narration">A stream of hissing green acid erupts from the dragonborn's jaws, searing the orc's chest.</p>
+            <div class="dm-note"><strong>Saving throws vs attack rolls:</strong> Some abilities make the TARGET roll to avoid it (saving throw) instead of YOU rolling to hit. Breath Weapon forces a DEX save. If the orc had passed (rolled 13+), it would take HALF damage (4 instead of 9).</div>
+        </div>
+
+        <div class="turn enemy">
+            <div class="turn-header">
+                <span class="turn-name">Orc A</span>
+                <span class="turn-init">Initiative 12</span>
+            </div>
+            <p class="narration">Wounded and enraged, the orc turns from the downed halfling to face the dragonborn.</p>
+            <div class="mechanic">
+                <strong>Attack:</strong> <span class="dice">d20+5 = 11</span> vs Halitus's AC 18 → <span class="miss">MISS!</span>
+            </div>
+            <p class="narration">Another swing deflected. Halitus is a wall of steel and scales.</p>
+        </div>
+
+        <div class="turn death">
+            <div class="turn-header">
+                <span class="turn-name">Squelch — Death Saving Throw</span>
+                <span class="turn-init">Initiative 8</span>
+            </div>
+            <div class="mechanic">
+                <strong>Death Save:</strong> <span class="dice">d20 = 14</span> → 10 or higher = <span class="hit">✓ Success! (1 of 3 needed to stabilize)</span>
+            </div>
+            <div class="dm-note"><strong>Death Saves:</strong> Each turn while at 0 HP, roll a d20. 10+ = success, 9 or less = failure. Three successes = you stabilize (unconscious but alive). Three failures = you die. A Natural 20 = you wake up with 1 HP! A Natural 1 = counts as two failures.</div>
+        </div>
+
+        <div class="turn enemy">
+            <div class="turn-header">
+                <span class="turn-name">Orc B</span>
+                <span class="turn-init">Initiative 6</span>
+            </div>
+            <div class="mechanic">
+                <strong>Attack vs Perseus:</strong> <span class="dice">d20+5 = 19</span> vs AC 14 → <span class="hit">HIT!</span><br>
+                <strong>Damage:</strong> <span class="damage">1d12+3 = 10</span>
+            </div>
+            <span class="hp-result down">💀 Perseus drops to 0 HP — UNCONSCIOUS!</span>
+            <p class="narration">The greataxe connects. Perseus crumples into the undergrowth. Halitus is alone against two wounded orcs, with both allies bleeding out.</p>
+        </div>
+
+        <!-- END OF ROUND 2 STATUS -->
+        <table class="status-table">
+            <tr><th>Character</th><th>HP</th><th>Status</th></tr>
+            <tr><td>Perseus</td><td style="color:#f87171">0/10</td><td style="color:#f87171">☠️ UNCONSCIOUS (0 death saves)</td></tr>
+            <tr><td>Halitus</td><td>12/12</td><td>Alone, fighting Orc A</td></tr>
+            <tr><td>Squelch</td><td style="color:#f87171">0/12</td><td style="color:#f87171">☠️ UNCONSCIOUS (1 success)</td></tr>
+            <tr><td>Orc A</td><td style="color:#fbbf24">6/15</td><td>Adjacent to Halitus</td></tr>
+            <tr><td>Orc B</td><td style="color:#fbbf24">10/15</td><td>Standing over Perseus</td></tr>
+        </table>
+
+        <!-- ROUND 3 -->
+        <div class="round-header"><h2>Round 3 — The Comeback</h2></div>
+
+        <div class="turn death">
+            <div class="turn-header">
+                <span class="turn-name">Perseus — Death Saving Throw</span>
+                <span class="turn-init">Initiative 17</span>
+            </div>
+            <div class="mechanic">
+                <strong>Death Save:</strong> <span class="dice">d20 = 4</span> → <span class="miss">✗ Failure! (1 failure)</span>
+            </div>
+            <p class="narration">Perseus is fading...</p>
+        </div>
+
+        <div class="turn fighter">
+            <div class="turn-header">
+                <span class="turn-name">Halitus Acidspeak</span>
+                <span class="turn-init">Initiative 14</span>
+            </div>
+            <p class="narration">Two allies down. Halitus makes a call: kill Orc A fast, then save Squelch — because Squelch can save Perseus.</p>
+            <div class="mechanic">
+                <strong>Action — Warhammer Attack vs Orc A (6 HP):</strong><br>
+                <span class="dice">d20+5 = 22</span> vs AC 13 → <span class="hit">HIT!</span><br>
+                <strong>Damage:</strong> <span class="damage">1d8+5 = 8</span>
+            </div>
+            <span class="hp-result dead">☠️ Orc A is DEAD!</span>
+            <p class="narration">The warhammer caves in the orc's skull. Two down, one to go. Halitus moves toward Squelch and braces for Orc B's charge.</p>
+            <div class="dm-note"><strong>Strategy:</strong> Halitus could have used his Healing Potion on Squelch — but that uses his Action, meaning he can't attack. Instead he kills the orc first (removing a threat) and trusts Squelch to survive one more Death Save. Smart play!</div>
+        </div>
+
+        <div class="turn enemy">
+            <div class="turn-header">
+                <span class="turn-name">Orc A</span>
+                <span class="turn-init">Initiative 12 — DEAD</span>
+            </div>
+            <p class="narration">Dead. Skipped.</p>
+        </div>
+
+        <div class="turn cleric">
+            <div class="turn-header">
+                <span class="turn-name">Squelch Puddingpants — Death Save</span>
+                <span class="turn-init">Initiative 8</span>
+            </div>
+            <div class="mechanic">
+                <strong>Death Save:</strong> <span class="dice">d20 = 20</span> → <span class="hit">🎉 NATURAL 20!! Squelch wakes up with 1 HP!</span>
+            </div>
+            <p class="narration">Squelch's eyes snap open! He gasps, coughs mud, and sees Perseus bleeding out 35 feet away. He knows exactly what to do.</p>
+            <div class="mechanic">
+                <strong>Bonus Action — Healing Word (range 60ft, costs 1 spell slot):</strong><br>
+                Healing: <span class="heal">1d4+3 (WIS) +3 (Disciple of Life) = 9 HP restored to Perseus!</span>
+            </div>
+            <span class="hp-result healed">Perseus wakes up at 9 HP! 🎉</span>
+            <p class="narration">Still flat on the ground, Squelch gasps out a prayer. Golden light streaks across the battlefield and wraps around Perseus, whose eyes flutter open.</p>
+            <div class="mechanic">
+                <strong>Action — Sacred Flame vs Orc B (60ft, DEX save):</strong><br>
+                Orc saves: <span class="dice">d20+1 = 7</span> vs DC 13 → <span class="miss">FAILED!</span><br>
+                <strong>Damage:</strong> <span class="damage">1d8 radiant = 6</span>
+            </div>
+            <span class="hp-result hurt">Orc B: 10 → 4 HP</span>
+            <div class="dm-note"><strong>THIS is why the Cleric is incredible.</strong> In one turn he: woke up from death (nat 20), healed an ally from 60ft away using a BONUS action (Healing Word), AND dealt damage with his main action (Sacred Flame). Healing Word being a bonus action is game-changing — you can heal AND do something else!</div>
+            <div class="dm-note"><strong>Disciple of Life:</strong> Whenever Squelch casts a healing spell, the target recovers an EXTRA 2 + spell level HP. That's why his Healing Word heals 1d4+6 instead of just 1d4+3.</div>
+        </div>
+
+        <div class="turn enemy">
+            <div class="turn-header">
+                <span class="turn-name">Orc B</span>
+                <span class="turn-init">Initiative 6</span>
+            </div>
+            <p class="narration">The last orc uses Aggressive to charge at Halitus.</p>
+            <div class="mechanic">
+                <strong>Attack:</strong> <span class="dice">d20+5 = 12</span> vs AC 18 → <span class="miss">MISS!</span>
+            </div>
+            <p class="narration">Halitus catches the blow on his shield. Again.</p>
+        </div>
+
+        <!-- END OF ROUND 3 STATUS -->
+        <table class="status-table">
+            <tr><th>Character</th><th>HP</th><th>Status</th></tr>
+            <tr><td>Perseus</td><td style="color:#4ade80">9/10</td><td style="color:#4ade80">BACK UP! Prone, 40ft from Orc B</td></tr>
+            <tr><td>Halitus</td><td>12/12</td><td>Adjacent to Orc B</td></tr>
+            <tr><td>Squelch</td><td style="color:#fbbf24">1/12</td><td>Alive, prone, 1 spell slot left</td></tr>
+            <tr><td>Orc B</td><td style="color:#f87171">4/15</td><td>Last one standing, next to Halitus</td></tr>
+        </table>
+
+        <!-- ROUND 4 -->
+        <div class="round-header"><h2>Round 4 — The Finish</h2></div>
+
+        <div class="turn rogue">
+            <div class="turn-header">
+                <span class="turn-name">Perseus Madonicai</span>
+                <span class="turn-init">Initiative 17</span>
+            </div>
+            <p class="narration">Perseus's eyes snap open, golden light fading from his wounds. He sees the last orc fighting Halitus. He stands up, draws his bow, and fires.</p>
+            <div class="mechanic">
+                <strong>Standing up from prone:</strong> costs half his movement (17.5 ft of his 35ft)<br>
+                <strong>Action — Shortbow Attack:</strong> <span class="dice">d20+5 = 15</span> vs AC 13 → <span class="hit">HIT!</span><br>
+                Halitus is adjacent to the orc → <strong>Sneak Attack triggers!</strong><br>
+                <strong>Damage:</strong> <span class="damage">1d6+3 + 1d6 = 4+3+3 = 10</span>
+            </div>
+            <span class="hp-result dead">☠️ Orc B is DEAD! COMBAT OVER! 🎉</span>
+            <p class="narration">The arrow punches through the orc's back. It topples forward. Silence falls over the forest road, broken only by heavy breathing.</p>
+        </div>
+
+        <!-- FINAL SUMMARY -->
+        <div class="summary">
+            <h2>Battle Over — Final Status</h2>
+            <table class="status-table">
+                <tr><th>Character</th><th>HP Left</th><th>Resources Used</th></tr>
+                <tr><td>Perseus</td><td>9/10</td><td>3 arrows</td></tr>
+                <tr><td>Halitus</td><td>12/12</td><td>Breath Weapon (recharges on short rest)</td></tr>
+                <tr><td>Squelch</td><td style="color:#f87171">1/12</td><td>1 of 2 spell slots (recharge on long rest)</td></tr>
+            </table>
+        </div>
+
+        <div class="summary">
+            <h2>✓ Abilities Showcased in This Fight</h2>
+            <ul>
+                <li><strong>Sneak Attack</strong> — massive damage when an ally is adjacent to target</li>
+                <li><strong>Cunning Action: Hide</strong> — bonus action stealth for advantage on next attack</li>
+                <li><strong>High AC tanking</strong> — Halitus's AC 18 deflected most attacks</li>
+                <li><strong>Dueling fighting style</strong> — consistent +2 damage on every hit</li>
+                <li><strong>Breath Weapon</strong> — big area damage, DEX save for half</li>
+                <li><strong>Death Saving Throws</strong> — successes, failures, and the dramatic Nat 20</li>
+                <li><strong>Healing Word</strong> — bonus action heal from 60ft, brought an ally back from 0 HP</li>
+                <li><strong>Disciple of Life</strong> — extra healing on every heal spell</li>
+                <li><strong>Sacred Flame</strong> — ranged damage using a saving throw, ignores cover</li>
+                <li><strong>Orc Aggressive</strong> — closing distance with bonus action movement</li>
+            </ul>
+        </div>
+
+        <div class="takeaways">
+            <h2>Key Lessons for Your First Session</h2>
+            <ul>
+                <li><strong>Halitus is the shield</strong> — enemies bounce off his AC 18. He should stand in front.</li>
+                <li><strong>Perseus hits like a truck when set up</strong> — but dies fast if caught alone. Fight the same enemies as Halitus!</li>
+                <li><strong>Squelch is the glue</strong> — one Healing Word can completely reverse a bad situation.</li>
+                <li><strong>Positioning matters</strong> — Sneak Attack needs an ally within 5ft of the target.</li>
+                <li><strong>Going to 0 HP isn't death</strong> — it's dramatic! Your allies can save you.</li>
+                <li><strong>Action vs Bonus Action</strong> — some things (Healing Word, Cunning Action) use your bonus action, so you can STILL do your main action too!</li>
+                <li><strong>Saving throws work backwards</strong> — instead of YOU rolling to hit, the ENEMY rolls to dodge. Low roll = they fail = full damage.</li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>
