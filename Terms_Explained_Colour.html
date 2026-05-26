@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D&D Character Sheet — Terms Explained</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #1a1a2e; color: #eee; padding: 20px; font-size: 14px; line-height: 1.6; }
+        .page { max-width: 850px; margin: 0 auto; background: #16213e; border: 2px solid #0f3460; border-radius: 12px; padding: 30px; }
+        h1 { font-size: 1.8em; border-bottom: 3px solid #e11d48; padding-bottom: 10px; margin-bottom: 24px; color: #fb7185; }
+        h2 { font-size: 1.2em; margin-top: 28px; margin-bottom: 8px; color: #38bdf8; border-bottom: 1px solid #1e3a5f; padding-bottom: 4px; }
+        .intro { color: #94a3b8; margin-bottom: 20px; }
+
+        .term { margin: 12px 0; padding: 12px 16px; border-left: 3px solid #7c3aed; background: #0f3460; border-radius: 0 8px 8px 0; }
+        .term-name { font-weight: bold; font-size: 1.05em; color: #c084fc; }
+        .term-what { margin-top: 4px; color: #cbd5e1; }
+        .term-what strong { color: #e2e8f0; }
+        .term-example { margin-top: 8px; padding: 8px 12px; background: #1e1b4b; border: 1px solid #4c1d95; border-radius: 6px; font-size: 0.9em; color: #a78bfa; }
+        .term-example::before { content: "Example: "; font-weight: bold; color: #7c3aed; }
+        .note { font-size: 0.85em; color: #64748b; font-style: italic; margin-top: 4px; }
+        .divider { border: none; border-top: 2px solid #1e3a5f; margin: 30px 0; }
+
+        @media print {
+            body { background: white; color: #111; }
+            .page { background: white; border: 1px solid #333; }
+            .term { background: #f8f8f8; border-left-color: #333; }
+            h1 { color: #333; border-bottom-color: #333; }
+            h2 { color: #333; border-bottom-color: #ccc; }
+            .term-name { color: #333; }
+            .term-what, .term-what strong { color: #111; }
+            .term-example { background: #f0f0f0; border-color: #ccc; color: #333; }
+            .term-example::before { color: #333; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <h1>Character Sheet — Every Term Explained</h1>
+        <p class="intro">Going through the character sheet top to bottom. If you understand these, you can play D&D.</p>
+
+        <h2>The Header (Top of the Sheet)</h2>
+
+        <div class="term">
+            <div class="term-name">Character Name</div>
+            <div class="term-what">Your character's name in the game world. This is who you're pretending to be.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Class & Level</div>
+            <div class="term-what"><strong>Class</strong> = your character's job/specialty (Fighter, Rogue, Cleric). It determines what you're good at.<br>
+            <strong>Level</strong> = how experienced you are. Everyone starts at Level 1. You level up by completing quests.</div>
+            <div class="term-example">A "Fighter 1" is a Level 1 Fighter — fresh adventurer, but already trained for combat.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Race</div>
+            <div class="term-what">Your character's species. Each race gives bonuses — Elves are nimble, Dragonborn are powerful, Halflings are lucky.</div>
+            <div class="term-example">A Wood Elf gets +2 Dexterity, darkvision (sees in the dark), and moves faster (35 ft instead of 30 ft).</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Background</div>
+            <div class="term-what">What your character did before becoming an adventurer. Gives you extra skill proficiencies and flavour.</div>
+            <div class="term-example">A "Criminal" background means you were a thief — you know how to pick locks and deceive people.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Proficiency Bonus (+2)</div>
+            <div class="term-what">A flat bonus added to things you're trained in (proficient). At Level 1, it's always +2. It goes up as you level.</div>
+            <div class="term-example">If you're proficient in Stealth and have DEX +3, your Stealth check is: d20 + 3 (DEX) + 2 (proficiency) = d20 + 5.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Hit Dice</div>
+            <div class="term-what">The type of dice you roll when healing during a short rest. Also determines your starting HP. Bigger = tougher.</div>
+            <div class="term-example">Fighter has 1d10 (tough), Rogue has 1d8 (medium), Wizard would have 1d6 (fragile).</div>
+        </div>
+
+        <hr class="divider">
+
+        <h2>Combat Stats (The Big Numbers)</h2>
+
+        <div class="term">
+            <div class="term-name">Armor Class (AC)</div>
+            <div class="term-what">How hard you are to hit. When an enemy attacks you, they roll a d20 — if their result is <strong>equal to or higher</strong> than your AC, they hit. Higher AC = harder to hit.</div>
+            <div class="term-example">Your AC is 18. An orc swings at you and rolls a 15 — that's lower than 18, so it misses! If it rolled 19, it would hit.</div>
+            <div class="note">AC comes from armor + shield + DEX modifier (for light/medium armor).</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Hit Points (HP)</div>
+            <div class="term-what">Your health bar. When you take damage, subtract it from your HP. When you reach 0, you fall unconscious and start making death saves. You're NOT dead yet at 0 — your allies can heal you.</div>
+            <div class="term-example">You have 12 HP. An enemy deals 5 damage. You now have 7 HP. Another hit for 8 damage drops you to 0 — you fall unconscious.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Initiative</div>
+            <div class="term-what">Determines turn order in combat. When a fight starts, everyone rolls d20 + their Initiative modifier. Highest goes first.</div>
+            <div class="term-example">Fight starts! Rogue rolls d20 + 3 = 17. Fighter rolls d20 + 2 = 9. Goblin rolls 12. Turn order: Rogue → Goblin → Fighter.</div>
+            <div class="note">Initiative = your DEX modifier. Quick characters act sooner.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Speed</div>
+            <div class="term-what">How far you can move on your turn, in feet. A grid square = 5 feet. So 30 ft speed = 6 squares of movement per turn.</div>
+            <div class="term-example">Speed 30 ft: you can move 6 squares on a grid. Speed 35 ft (Wood Elf): you can move 7 squares.</div>
+        </div>
+
+        <hr class="divider">
+
+        <h2>Ability Scores (The 6 Stats)</h2>
+
+        <div class="term">
+            <div class="term-what" style="margin-bottom: 10px;">Every character has 6 core stats. Each has a <strong>Score</strong> (the raw number, like 16) and a <strong>Modifier</strong> (the bonus you actually add to rolls, like +3). The modifier is what you use in play.</div>
+            <div class="term-what"><strong>How to get the modifier:</strong> Score minus 10, divide by 2, round down. (Don't worry — it's pre-calculated on your sheet!)</div>
+            <div class="term-example">Score 16 → (16 - 10) ÷ 2 = +3. Score 8 → (8 - 10) ÷ 2 = -1.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Strength (STR)</div>
+            <div class="term-what">Physical power. Used for: melee attacks with heavy weapons, breaking things, climbing, lifting, shoving.</div>
+            <div class="term-example">Kicking down a door? Roll d20 + STR modifier.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Dexterity (DEX)</div>
+            <div class="term-what">Agility and reflexes. Used for: ranged attacks (bows), finesse weapons, dodging, sneaking, picking locks, initiative.</div>
+            <div class="term-example">Sneaking past a guard? Roll d20 + DEX modifier (+ proficiency if trained in Stealth).</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Constitution (CON)</div>
+            <div class="term-what">Toughness and endurance. Used for: hit points, resisting poison, holding your breath, maintaining concentration on spells when hit.</div>
+            <div class="term-example">A higher CON means more HP. CON +3 = you get 3 extra HP at every level.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Intelligence (INT)</div>
+            <div class="term-what">Book smarts and memory. Used for: recalling lore, investigating clues, arcane magic (for Wizards).</div>
+            <div class="term-example">Trying to figure out what ancient runes mean? Roll d20 + INT modifier.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Wisdom (WIS)</div>
+            <div class="term-what">Awareness, intuition, and street smarts. Used for: noticing things (Perception), reading people (Insight), healing magic (for Clerics), survival.</div>
+            <div class="term-example">Noticing an ambush? That's Perception = d20 + WIS modifier + proficiency (if trained).</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Charisma (CHA)</div>
+            <div class="term-what">Force of personality. Used for: persuading, deceiving, intimidating, performing, and some magic (Bards, Sorcerers).</div>
+            <div class="term-example">Trying to talk your way past a guard? Roll d20 + CHA modifier (+ proficiency if trained in Persuasion).</div>
+        </div>
+
+        <hr class="divider">
+
+        <h2>Saving Throws</h2>
+
+        <div class="term">
+            <div class="term-name">What's a Saving Throw?</div>
+            <div class="term-what">A saving throw is a <strong>reaction roll</strong> — something bad is happening TO you and you're trying to resist it. The DM tells you which ability to roll. You roll d20 + that ability's modifier (+ proficiency if your class is proficient in that save).</div>
+            <div class="term-example">A trap shoots fire. DM says: "Make a Dexterity saving throw." You roll d20 + DEX mod. If you beat the DC (difficulty), you dodge and take half damage.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">How is this different from Ability Scores?</div>
+            <div class="term-what">
+                <strong>Ability Score/Modifier</strong> = your raw stat. Used for skill checks (things YOU choose to do).<br>
+                <strong>Saving Throw</strong> = same modifier, BUT you might also add your proficiency bonus (+2) if your class is proficient in that save. This is class training for reacting to dangers.<br><br>
+                Think of it this way:<br>
+                • <strong>Skill check</strong> = "I want to do something" (you initiate)<br>
+                • <strong>Saving throw</strong> = "Something is happening to me, can I resist?" (you react)
+            </div>
+            <div class="term-example">A Rogue has DEX +3. Their DEX saving throw is +5 (because Rogues are proficient in DEX saves: +3 DEX + 2 proficiency). But a Cleric with DEX +1 only gets +1 on DEX saves (not proficient).</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">The ★ symbol</div>
+            <div class="term-what">★ means your class is proficient in that saving throw — you add your proficiency bonus (+2) on top of the ability modifier. Each class gets 2 proficient saves.</div>
+            <div class="term-example">Fighter is proficient in STR and CON saves. Rogue in DEX and INT. Cleric in WIS and CHA.</div>
+        </div>
+
+        <hr class="divider">
+
+        <h2>Skills</h2>
+
+        <div class="term">
+            <div class="term-name">What's a Skill Check?</div>
+            <div class="term-what">When you try to do something with an uncertain outcome, the DM asks for a skill check. You roll d20 + the relevant skill modifier. Beat the DC (number the DM picks based on difficulty) and you succeed.</div>
+            <div class="term-example">You try to climb a cliff. DM says: "Make an Athletics check, DC 12." You roll d20 + Athletics modifier. Got a 14? You made it!</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">How Skill Modifiers Are Calculated</div>
+            <div class="term-what">Each skill is tied to an ability score. Your modifier = ability mod + proficiency (if proficient, marked ★).</div>
+            <div class="term-example">Stealth is tied to DEX. If you have DEX +3 and are proficient (★): Stealth = +3 + 2 = +5. If NOT proficient: just +3.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Expertise (★★)</div>
+            <div class="term-what">Some characters (like Rogues) get Expertise — they add proficiency TWICE instead of once. This is why Perseus has Stealth +7 (DEX +3 + proficiency ×2 = +3 + 4).</div>
+        </div>
+
+        <hr class="divider">
+
+        <h2>Weapon Attacks</h2>
+
+        <div class="term">
+            <div class="term-name">To Hit</div>
+            <div class="term-what">The bonus you add when rolling to attack. You roll d20 + To Hit. If the total meets or beats the target's AC, you hit them.</div>
+            <div class="term-example">Your "To Hit" is +5. Enemy AC is 13. You roll d20 and get an 8. Total: 8 + 5 = 13. That equals the AC — you hit!</div>
+            <div class="note">To Hit = ability modifier (STR for melee, DEX for ranged/finesse) + proficiency bonus.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Damage</div>
+            <div class="term-what">If you hit, roll this to see how much HP you take away from the target. Written as dice + modifier.</div>
+            <div class="term-example">Damage is "1d8+5". Roll an 8-sided die (say you get a 6), add 5 = 11 damage. The enemy loses 11 HP.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Damage Type</div>
+            <div class="term-what">What kind of damage (piercing, slashing, bludgeoning, fire, etc.). Usually doesn't matter — BUT some creatures resist or are vulnerable to certain types.</div>
+            <div class="term-example">Ochre jellies are resistant to slashing — and they SPLIT into two if you hit them with a sword! That's why Halitus uses a warhammer (bludgeoning) instead.</div>
+        </div>
+
+        <hr class="divider">
+
+        <h2>Features & Abilities</h2>
+
+        <div class="term">
+            <div class="term-name">What Are Features?</div>
+            <div class="term-what">Special things your character can do because of their class or race. Some are always active (passive), some you choose to use (active). Active ones often have limits — "1/short rest" means you can use it once, then it recharges when you take a rest.</div>
+            <div class="term-example">Second Wind (Fighter): "As a bonus action, heal 1d10+1 HP. 1/short rest." = You can heal yourself once per rest period.</div>
+        </div>
+
+        <hr class="divider">
+
+        <h2>Spellcasting (Cleric Only)</h2>
+
+        <div class="term">
+            <div class="term-name">Spell Save DC</div>
+            <div class="term-what">When you cast a spell that forces an enemy to resist, they roll a save against this number. If they roll below your Spell Save DC, your spell fully works.</div>
+            <div class="term-example">Squelch casts Sacred Flame (DC 13). The goblin makes a DEX save and rolls 11 — that's below 13, so it takes the full 1d8 radiant damage.</div>
+            <div class="note">Spell Save DC = 8 + proficiency bonus + WIS modifier.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Spell Attack Bonus</div>
+            <div class="term-what">Like "To Hit" but for spells that require an attack roll (instead of a saving throw). Roll d20 + Spell Attack vs. enemy AC.</div>
+            <div class="note">Spell Attack = proficiency bonus + WIS modifier.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Spell Slots</div>
+            <div class="term-what">Your "spell fuel." Each non-cantrip spell costs 1 slot to cast. At Level 1, you have 2 slots. Once used, they're gone until you take a long rest (sleep 8 hours). You must choose wisely.</div>
+            <div class="term-example">You have 2 slots. Combat starts — you cast Bless (1 slot used, 1 remaining). An ally drops to 0 HP — you cast Healing Word (last slot used, 0 remaining). Now you can only use cantrips until you sleep.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Cantrips</div>
+            <div class="term-what">Simple spells you can cast unlimited times — no spell slot needed. They're your "basic attacks" as a caster.</div>
+            <div class="term-example">Sacred Flame: unlimited uses, deals 1d8 damage at 60ft range. Use it every turn when you don't need to heal.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Concentration</div>
+            <div class="term-what">Some spells say "Concentration" — this means you must actively maintain them. Rules: (1) Only ONE concentration spell at a time. (2) If you take damage while concentrating, roll CON save (DC 10 or half the damage, whichever is higher) — fail and the spell ends.</div>
+            <div class="term-example">Squelch is concentrating on Bless. An orc hits for 8 damage. Roll CON save DC 10 (since 10 > 8÷2=4). Beat 10? Bless stays active. Fail? It ends.</div>
+        </div>
+
+        <hr class="divider">
+
+        <h2>Senses</h2>
+
+        <div class="term">
+            <div class="term-name">Passive Perception</div>
+            <div class="term-what">How observant you are WITHOUT actively trying. The DM uses this to determine if you notice hidden things automatically — without you asking to look.</div>
+            <div class="term-example">A hidden tripwire has DC 13 to notice. Your Passive Perception is 14. DM tells you: "You spot a thin wire stretched across the hallway." (You didn't even ask!)</div>
+            <div class="note">Passive Perception = 10 + Perception modifier.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Passive Insight</div>
+            <div class="term-what">How good you are at reading people without actively trying. The DM uses this to tell you if someone seems dishonest.</div>
+            <div class="term-example">An NPC lies to the party. Their Deception is 12. Your Passive Insight is 15 — DM tells you: "Something feels off about what they just said."</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Darkvision</div>
+            <div class="term-what">Ability to see in the dark (in grayscale/black and white). Elves have this naturally. Without it, you need a torch or you're blind in darkness.</div>
+            <div class="term-example">The party enters a dark cave. Perseus (Elf) can see fine (60 ft in darkness). Halitus and Squelch need a torch.</div>
+        </div>
+
+        <hr class="divider">
+
+        <h2>Death Saves</h2>
+
+        <div class="term">
+            <div class="term-name">How Dying Works</div>
+            <div class="term-what">When you hit 0 HP, you fall unconscious. You're NOT dead. Each turn, you roll a d20 (no modifiers):<br><br>
+            • Roll 10 or higher = 1 Success ✓<br>
+            • Roll 9 or lower = 1 Failure ✗<br>
+            • Roll a natural 20 = you wake up with 1 HP!<br>
+            • Roll a natural 1 = 2 Failures at once<br><br>
+            <strong>3 Successes</strong> = you stabilize (unconscious but no longer dying)<br>
+            <strong>3 Failures</strong> = your character dies</div>
+            <div class="term-example">You're at 0 HP. Round 1: roll 14 (1 success). Round 2: roll 6 (1 failure). Round 3: Squelch casts Healing Word for 5 HP — you wake up immediately! Death saves reset.</div>
+            <div class="note">ANY healing at 0 HP wakes you up instantly. That's why Healing Word is so valuable.</div>
+        </div>
+
+        <hr class="divider">
+
+        <h2>Your Turn in Combat</h2>
+
+        <div class="term">
+            <div class="term-name">The Structure of a Turn</div>
+            <div class="term-what">On your turn you get three things:<br><br>
+            <strong>1. Movement</strong> — Move up to your Speed (e.g. 30 ft). You can split this before and after your action.<br>
+            <strong>2. Action</strong> — Your main thing: Attack, Cast a Spell, Dash (double movement), Dodge, Disengage, Help, Hide, Use an Object.<br>
+            <strong>3. Bonus Action</strong> — Only if you have an ability that specifically says "bonus action." Not everyone has one every turn.</div>
+            <div class="term-example">Halitus's turn: Move 20 ft toward the orc (movement), swing warhammer (action), use Second Wind to heal (bonus action). Done!</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Action vs. Bonus Action</div>
+            <div class="term-what"><strong>Action</strong> = your main thing each turn. Everyone gets one.<br>
+            <strong>Bonus Action</strong> = a quick extra thing. You only get one IF you have an ability that uses it. You can't substitute one for the other.</div>
+            <div class="term-example">Squelch casts Sacred Flame (action) AND Healing Word (bonus action) on the same turn — because Healing Word specifically says "bonus action."</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Advantage & Disadvantage</div>
+            <div class="term-what"><strong>Advantage</strong> = roll 2d20, take the HIGHER result. Situation is in your favour.<br>
+            <strong>Disadvantage</strong> = roll 2d20, take the LOWER result. Situation is against you.<br>
+            They cancel each other out if you have both.</div>
+            <div class="term-example">Perseus is hidden and attacks from shadows → Advantage. Roll two d20s: 7 and 15. Take the 15! (Plus, since he has advantage, he gets Sneak Attack damage.)</div>
+        </div>
+
+        <hr class="divider">
+
+        <h2>Other Terms</h2>
+
+        <div class="term">
+            <div class="term-name">Short Rest vs. Long Rest</div>
+            <div class="term-what"><strong>Short Rest</strong> = 1 hour break. You can spend Hit Dice to heal. Some abilities recharge (Second Wind, Breath Weapon).<br>
+            <strong>Long Rest</strong> = 8 hours (sleep). Regain ALL hit points, ALL spell slots, ALL abilities. Full reset.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">DC (Difficulty Class)</div>
+            <div class="term-what">The target number you need to meet or beat on a roll. Set by the DM for skill checks, or by the spell/ability for saves.<br>
+            Easy = DC 10 | Medium = DC 15 | Hard = DC 20</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Proficiency (★)</div>
+            <div class="term-what">Being trained in something. When proficient, add your Proficiency Bonus (+2 at Level 1) to the roll. Without proficiency, just use the raw ability modifier.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">d4, d6, d8, d10, d12, d20</div>
+            <div class="term-what">Dice with that many sides. "2d6" means "roll two 6-sided dice and add them together." The d20 is the main die — used for almost every check, attack, and save.</div>
+        </div>
+
+        <div class="term">
+            <div class="term-name">Natural 20 / Natural 1</div>
+            <div class="term-what">The number shown on the d20 BEFORE adding modifiers.<br>
+            <strong>Nat 20</strong> on an attack = automatic hit + double damage dice (critical hit!).<br>
+            <strong>Nat 1</strong> on an attack = automatic miss, no matter how high your bonus is.</div>
+            <div class="term-example">Halitus rolls a 20 on the die. Critical hit! Roll damage dice twice: 2d8+5 instead of 1d8+5. Devastating!</div>
+        </div>
+
+    </div>
+</body>
+</html>

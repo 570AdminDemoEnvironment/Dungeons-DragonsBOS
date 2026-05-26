@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Perseus Madonicai - Wood Elf Rogue</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #1a1a2e; color: #eee; padding: 20px; }
+        .sheet { max-width: 900px; margin: 0 auto; background: #16213e; border: 2px solid #0f3460; border-radius: 12px; padding: 24px; }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #533483; padding-bottom: 16px; margin-bottom: 20px; }
+        .char-name { font-size: 2.2em; font-weight: bold; color: #a855f7; }
+        .char-subtitle { color: #c084fc; font-size: 1.1em; }
+        .header-right { text-align: right; }
+        .header-right div { margin: 2px 0; color: #94a3b8; }
+        .header-right span { color: #e2e8f0; font-weight: bold; }
+
+        .section-title { font-size: 1.1em; font-weight: bold; color: #a855f7; border-bottom: 1px solid #533483; padding-bottom: 4px; margin-bottom: 10px; margin-top: 18px; text-transform: uppercase; letter-spacing: 1px; }
+
+        .stats-row { display: flex; gap: 12px; justify-content: center; margin: 16px 0; }
+        .stat-block { background: #0f3460; border: 2px solid #533483; border-radius: 10px; padding: 10px 14px; text-align: center; min-width: 80px; }
+        .stat-block .label { font-size: 0.7em; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-block .mod { font-size: 1.6em; font-weight: bold; color: #c084fc; }
+        .stat-block .score { font-size: 0.85em; color: #64748b; }
+
+        .combat-row { display: flex; gap: 16px; justify-content: center; margin: 16px 0; flex-wrap: wrap; }
+        .combat-box { background: #0f3460; border: 2px solid #e11d48; border-radius: 10px; padding: 12px 20px; text-align: center; }
+        .combat-box .label { font-size: 0.7em; color: #94a3b8; text-transform: uppercase; }
+        .combat-box .value { font-size: 1.8em; font-weight: bold; color: #fb7185; }
+
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+        .skills-list { list-style: none; }
+        .skills-list li { padding: 3px 0; font-size: 0.9em; display: flex; justify-content: space-between; border-bottom: 1px solid #1e3a5f; }
+        .skills-list .prof { color: #a855f7; font-weight: bold; }
+        .skills-list .expertise { color: #facc15; font-weight: bold; }
+        .skill-mod { font-weight: bold; }
+
+        .weapon-table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+        .weapon-table th { background: #0f3460; color: #a855f7; padding: 8px; text-align: left; font-size: 0.8em; text-transform: uppercase; }
+        .weapon-table td { padding: 8px; border-bottom: 1px solid #1e3a5f; }
+        .weapon-table .hit { color: #4ade80; font-weight: bold; }
+        .weapon-table .dmg { color: #fb7185; font-weight: bold; }
+
+        .items-list { list-style: none; }
+        .items-list li { padding: 5px 0; border-bottom: 1px solid #1e3a5f; font-size: 0.9em; }
+        .items-list li::before { content: "◆ "; color: #a855f7; }
+
+        .feature-box { background: #0f3460; border-left: 3px solid #a855f7; padding: 10px 14px; margin: 8px 0; border-radius: 0 8px 8px 0; }
+        .feature-box .name { font-weight: bold; color: #c084fc; }
+        .feature-box .desc { font-size: 0.9em; color: #cbd5e1; margin-top: 4px; }
+
+        .saves-list { list-style: none; }
+        .saves-list li { padding: 3px 0; font-size: 0.9em; display: flex; justify-content: space-between; }
+        .saves-list .prof { color: #4ade80; font-weight: bold; }
+
+        .prof-lang { font-size: 0.85em; color: #94a3b8; line-height: 1.6; }
+        .prof-lang strong { color: #e2e8f0; }
+
+        .senses-row { display: flex; gap: 16px; margin: 8px 0; flex-wrap: wrap; }
+        .sense-box { background: #0f3460; border-radius: 8px; padding: 8px 14px; }
+        .sense-box .label { font-size: 0.7em; color: #94a3b8; text-transform: uppercase; }
+        .sense-box .value { font-size: 1.1em; font-weight: bold; color: #e2e8f0; }
+
+        .tip-box { background: #1e1b4b; border: 1px dashed #7c3aed; border-radius: 8px; padding: 12px 16px; margin-top: 16px; }
+        .tip-box .tip-title { color: #a78bfa; font-weight: bold; font-size: 0.9em; margin-bottom: 6px; }
+        .tip-box .tip-text { font-size: 0.85em; color: #c4b5fd; }
+
+        .additional-space { margin-top: 6px; }
+        .blank-line { border-bottom: 1px dotted #444; height: 24px; margin: 4px 0; }
+
+        @media print {
+            body { background: white; color: black; padding: 10px; }
+            .sheet { border: 1px solid #333; background: white; }
+            .stat-block, .combat-box, .sense-box, .feature-box { background: #f8f8f8; border-color: #333; }
+            .char-name, .section-title, .stat-block .mod, .feature-box .name { color: #333; }
+            .combat-box .value { color: #c0392b; }
+            .weapon-table .hit { color: #27ae60; }
+            .weapon-table .dmg { color: #c0392b; }
+            .tip-box { background: #f0f0f0; border-color: #666; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sheet">
+        <!-- HEADER -->
+        <div class="header">
+            <div>
+                <div class="char-name">Perseus Madonicai</div>
+                <div class="char-subtitle">Wood Elf Rogue — Level 1 — "The Shadow"</div>
+            </div>
+            <div class="header-right">
+                <div>Background: <span>Criminal</span></div>
+                <div>Experience: <span>0 XP</span></div>
+                <div>Hit Dice: <span>1d8</span></div>
+                <div>Proficiency Bonus: <span>+2</span></div>
+            </div>
+        </div>
+
+        <!-- COMBAT STATS -->
+        <div class="combat-row">
+            <div class="combat-box">
+                <div class="label">Armor Class</div>
+                <div class="value">14</div>
+            </div>
+            <div class="combat-box">
+                <div class="label">Hit Points</div>
+                <div class="value">10</div>
+            </div>
+            <div class="combat-box">
+                <div class="label">Initiative</div>
+                <div class="value">+3</div>
+            </div>
+            <div class="combat-box">
+                <div class="label">Speed</div>
+                <div class="value">35 ft</div>
+            </div>
+        </div>
+
+        <!-- ABILITY SCORES -->
+        <div class="section-title">Ability Scores</div>
+        <div class="stats-row">
+            <div class="stat-block">
+                <div class="label">STR</div>
+                <div class="mod">+0</div>
+                <div class="score">10</div>
+            </div>
+            <div class="stat-block">
+                <div class="label">DEX</div>
+                <div class="mod">+3</div>
+                <div class="score">17</div>
+            </div>
+            <div class="stat-block">
+                <div class="label">CON</div>
+                <div class="mod">+2</div>
+                <div class="score">14</div>
+            </div>
+            <div class="stat-block">
+                <div class="label">INT</div>
+                <div class="mod">-1</div>
+                <div class="score">8</div>
+            </div>
+            <div class="stat-block">
+                <div class="label">WIS</div>
+                <div class="mod">+2</div>
+                <div class="score">14</div>
+            </div>
+            <div class="stat-block">
+                <div class="label">CHA</div>
+                <div class="mod">+1</div>
+                <div class="score">12</div>
+            </div>
+        </div>
+
+        <!-- WEAPONS & ATTACKS -->
+        <div class="section-title">Weapon Attacks</div>
+        <table class="weapon-table">
+            <tr><th>Weapon</th><th>To Hit</th><th>Damage</th><th>Type</th><th>Notes</th></tr>
+            <tr>
+                <td>Shortsword</td>
+                <td class="hit">+5</td>
+                <td class="dmg">1d6+3</td>
+                <td>Piercing</td>
+                <td>Finesse, Light</td>
+            </tr>
+            <tr>
+                <td>Shortbow</td>
+                <td class="hit">+5</td>
+                <td class="dmg">1d6+3</td>
+                <td>Piercing</td>
+                <td>Range 80/320, 20 arrows</td>
+            </tr>
+        </table>
+
+        <div class="two-col">
+            <div>
+                <!-- SAVING THROWS -->
+                <div class="section-title">Saving Throws</div>
+                <ul class="saves-list">
+                    <li><span>Strength</span><span>+0</span></li>
+                    <li class="prof"><span>Dexterity ★</span><span>+5</span></li>
+                    <li><span>Constitution</span><span>+2</span></li>
+                    <li class="prof"><span>Intelligence ★</span><span>+1</span></li>
+                    <li><span>Wisdom</span><span>+2</span></li>
+                    <li><span>Charisma</span><span>+1</span></li>
+                </ul>
+
+                <!-- SKILLS -->
+                <div class="section-title">Skills</div>
+                <ul class="skills-list">
+                    <li class="prof"><span>Acrobatics (DEX) ★</span><span class="skill-mod">+5</span></li>
+                    <li><span>Animal Handling (WIS)</span><span class="skill-mod">+2</span></li>
+                    <li><span>Arcana (INT)</span><span class="skill-mod">-1</span></li>
+                    <li><span>Athletics (STR)</span><span class="skill-mod">+0</span></li>
+                    <li class="prof"><span>Deception (CHA) ★</span><span class="skill-mod">+3</span></li>
+                    <li><span>History (INT)</span><span class="skill-mod">-1</span></li>
+                    <li><span>Insight (WIS)</span><span class="skill-mod">+2</span></li>
+                    <li><span>Intimidation (CHA)</span><span class="skill-mod">+1</span></li>
+                    <li class="prof"><span>Investigation (INT) ★</span><span class="skill-mod">+1</span></li>
+                    <li><span>Medicine (WIS)</span><span class="skill-mod">+2</span></li>
+                    <li><span>Nature (INT)</span><span class="skill-mod">-1</span></li>
+                    <li class="prof"><span>Perception (WIS) ★</span><span class="skill-mod">+4</span></li>
+                    <li><span>Performance (CHA)</span><span class="skill-mod">+1</span></li>
+                    <li><span>Persuasion (CHA)</span><span class="skill-mod">+1</span></li>
+                    <li><span>Religion (INT)</span><span class="skill-mod">-1</span></li>
+                    <li class="prof"><span>Sleight of Hand (DEX) ★</span><span class="skill-mod">+5</span></li>
+                    <li class="expertise"><span>Stealth (DEX) ★★</span><span class="skill-mod">+7</span></li>
+                    <li><span>Survival (WIS)</span><span class="skill-mod">+2</span></li>
+                </ul>
+            </div>
+
+            <div>
+                <!-- FEATURES & ABILITIES -->
+                <div class="section-title">Features & Abilities</div>
+                <div class="feature-box">
+                    <div class="name">Sneak Attack (1d6)</div>
+                    <div class="desc">Once per turn, deal an extra 1d6 damage when you hit with a finesse/ranged weapon AND you have advantage on the attack OR an ally is within 5ft of the target.</div>
+                </div>
+                <div class="feature-box">
+                    <div class="name">Expertise</div>
+                    <div class="desc">Double proficiency bonus on Stealth (+7) and Thieves' Tools (+7).</div>
+                </div>
+                <div class="feature-box">
+                    <div class="name">Darkvision (60 ft)</div>
+                    <div class="desc">You can see in dim light as if bright, and darkness as dim light (grayscale only). No torch needed underground!</div>
+                </div>
+                <div class="feature-box">
+                    <div class="name">Fey Ancestry</div>
+                    <div class="desc">Advantage on saves vs. being charmed. Magic can't put you to sleep.</div>
+                </div>
+                <div class="feature-box">
+                    <div class="name">Mask of the Wild</div>
+                    <div class="desc">You can hide when lightly obscured by natural phenomena (rain, fog, foliage).</div>
+                </div>
+
+                <!-- ITEMS -->
+                <div class="section-title">Equipment & Items</div>
+                <ul class="items-list">
+                    <li>Leather Armor (worn)</li>
+                    <li>Shortsword</li>
+                    <li>Shortbow + Quiver (20 arrows)</li>
+                    <li>Thieves' Tools</li>
+                    <li>Rope, hempen (50 ft)</li>
+                    <li>Crowbar (advantage on STR checks to pry)</li>
+                </ul>
+
+                <!-- ADDITIONAL EQUIPMENT -->
+                <div class="section-title">Additional Equipment & Notes</div>
+                <div class="additional-space">
+                    <div class="blank-line"></div>
+                    <div class="blank-line"></div>
+                    <div class="blank-line"></div>
+                    <div class="blank-line"></div>
+                    <div class="blank-line"></div>
+                </div>
+
+                <!-- PROFICIENCIES -->
+                <div class="section-title">Proficiencies & Languages</div>
+                <div class="prof-lang">
+                    <strong>Armor:</strong> Light armor<br>
+                    <strong>Weapons:</strong> Simple, hand crossbow, longsword, rapier, shortsword<br>
+                    <strong>Tools:</strong> Thieves' tools, Gaming set (dice)<br>
+                    <strong>Languages:</strong> Common, Elvish, Thieves' Cant
+                </div>
+            </div>
+        </div>
+
+        <!-- SENSES -->
+        <div class="section-title">Senses</div>
+        <div class="senses-row">
+            <div class="sense-box">
+                <div class="label">Passive Perception</div>
+                <div class="value">14</div>
+            </div>
+            <div class="sense-box">
+                <div class="label">Passive Insight</div>
+                <div class="value">12</div>
+            </div>
+            <div class="sense-box">
+                <div class="label">Passive Investigation</div>
+                <div class="value">11</div>
+            </div>
+            <div class="sense-box">
+                <div class="label">Darkvision</div>
+                <div class="value">60 ft</div>
+            </div>
+        </div>
+
+        <!-- DEATH SAVES -->
+        <div class="section-title">Death Saves</div>
+        <div style="font-size: 0.9em; color: #94a3b8;">
+            Successes: ○ ○ ○ &nbsp;&nbsp;&nbsp; Failures: ○ ○ ○
+        </div>
+
+        <!-- QUICK PLAY TIP -->
+        <div class="tip-box">
+            <div class="tip-title">⚔️ QUICK PLAY GUIDE — Your Turn in Combat</div>
+            <div class="tip-text">
+                <strong>1. Move</strong> up to 35 ft<br>
+                <strong>2. Action</strong> — Attack (shortsword or shortbow), Dash, Disengage, Dodge, Hide<br>
+                <strong>3. Bonus Action</strong> — (none at Level 1, but Thieves' Cant lets you leave hidden messages)<br><br>
+                <strong>Key Tactic:</strong> If the Fighter or Cleric is standing next to your target, you get Sneak Attack (+1d6 extra damage) automatically. Try to attack the same enemy your allies are fighting!<br><br>
+                <strong>Out of Combat:</strong> You're the scout. Check for traps (Investigation +1), pick locks (Thieves' Tools +7), sneak ahead (Stealth +7), spot hidden things (Perception +4).
+            </div>
+        </div>
+    </div>
+</body>
+</html>
