@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon of Icespire Peak — Party Hub</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: #eee; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .container { max-width: 700px; width: 100%; }
+
+        h1 { text-align: center; font-size: 2.2em; margin-bottom: 8px; color: #e2e8f0; }
+        .subtitle { text-align: center; color: #64748b; font-size: 1em; margin-bottom: 40px; }
+
+        .cards { display: flex; flex-direction: column; gap: 16px; }
+
+        a.card { display: flex; align-items: center; gap: 20px; padding: 20px 24px; background: #16213e; border: 2px solid #1e3a5f; border-radius: 12px; text-decoration: none; color: #eee; transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s; }
+        a.card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+
+        .card-icon { font-size: 2.2em; width: 56px; text-align: center; flex-shrink: 0; }
+        .card-body { flex: 1; }
+        .card-title { font-size: 1.2em; font-weight: bold; }
+        .card-desc { font-size: 0.85em; color: #94a3b8; margin-top: 2px; }
+
+        .card.rogue { border-color: #7c3aed; }
+        .card.rogue:hover { border-color: #a855f7; box-shadow: 0 8px 24px rgba(124,58,237,0.2); }
+        .card.rogue .card-title { color: #c084fc; }
+
+        .card.fighter { border-color: #b45309; }
+        .card.fighter:hover { border-color: #f59e0b; box-shadow: 0 8px 24px rgba(180,83,9,0.2); }
+        .card.fighter .card-title { color: #fbbf24; }
+
+        .card.cleric { border-color: #166534; }
+        .card.cleric:hover { border-color: #4ade80; box-shadow: 0 8px 24px rgba(22,101,52,0.2); }
+        .card.cleric .card-title { color: #86efac; }
+
+        .card.rules { border-color: #be123c; }
+        .card.rules:hover { border-color: #fb7185; box-shadow: 0 8px 24px rgba(190,18,60,0.2); }
+        .card.rules .card-title { color: #fb7185; }
+
+        .footer { text-align: center; margin-top: 40px; color: #475569; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dragon of Icespire Peak</h1>
+        <div class="subtitle">Party Character Sheets & Rules Reference</div>
+
+        <div class="cards">
+            <a href="Character_Shadow_Rogue.html" class="card rogue">
+                <div class="card-icon">🗡️</div>
+                <div class="card-body">
+                    <div class="card-title">Perseus Madonicai</div>
+                    <div class="card-desc">Wood Elf Rogue — "The Shadow" — Stealth, scouting, sneak attacks</div>
+                </div>
+            </a>
+
+            <a href="Character_Bruiser_Fighter.html" class="card fighter">
+                <div class="card-icon">🐉</div>
+                <div class="card-body">
+                    <div class="card-title">Halitus Acidspeak</div>
+                    <div class="card-desc">Dragonborn Fighter — "The Bruiser" — Heavy armor, big damage, acid breath</div>
+                </div>
+            </a>
+
+            <a href="Character_Mender_Cleric.html" class="card cleric">
+                <div class="card-icon">✨</div>
+                <div class="card-body">
+                    <div class="card-title">Squelch Puddingpants</div>
+                    <div class="card-desc">Halfling Life Cleric — "The Mender" — Healing, buffs, divine magic</div>
+                </div>
+            </a>
+
+            <a href="Terms_Explained_Colour.html" class="card rules">
+                <div class="card-icon">📖</div>
+                <div class="card-body">
+                    <div class="card-title">Rules & Terms Explained</div>
+                    <div class="card-desc">Every term on the character sheet explained with examples — read this first!</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="footer">Weekend D&D Session — Dragon of Icespire Peak Campaign</div>
+    </div>
+</body>
+</html>
